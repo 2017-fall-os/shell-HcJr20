@@ -9,7 +9,9 @@
 #include <string.h>
 #include "tokenizer.h"
 
-
+int foundInPath = 0;
+int tokenVecSize;
+int pathTokenSize;
 
 // compare to check for exit
 int checkExit(char* str, char* exit){
@@ -26,8 +28,8 @@ int checkExit(char* str, char* exit){
 void startFork(char** token, char** path){
 printf("entered startFork\n");
 struct stat command;
-int found = stat(token[0], &command) == 0 && command.st_mode & S_IXOTH;
-if(found){
+
+if(stat(token[0], &command) == 0 && command.st_mode & S_IXOTH){
     printf("Hello Poochy You are about to fork");
     int process = fork();
     if(process < 0){
@@ -42,10 +44,8 @@ if(found){
        printf("In parent process");
     }
 }
- else if(!found){
-      for(int i = 0; PATH != 0; i++){
-          
-      }
+ else{
+      
     }
 }
 
@@ -66,18 +66,19 @@ int main(int argc, char** argv, char**envp){
     }   
      // build tokenizer
  
-       char ** token = mytoc(string , ' ');
-       
-    
+      // char ** token = mytoc(string , ' ');
+      // tokenVecSize = getVectorSize();
+      // printf("token size: %d \n", tokenVecSize);
+      // setTrackers(0);
        char* getpath = getenv("PATH");
-       char ** path = mytoc(getpath, ':');
-       printf("This is the char at 0,0: %c \n", token[0][0]); 
-       startFork(token, path);
-
+      char ** token = mytoc(getpath, ':');
+       pathTokenSize= getVectorSize();   
+      
+      
+// startFork(token, path);
     // free up the space
        for(int i = 0; i < getVectorSize(); i++){
-          
-	  free(token[i]);
+           free(token[i]);
        } 
          memset(string, 0, size - 1);
          free(token);

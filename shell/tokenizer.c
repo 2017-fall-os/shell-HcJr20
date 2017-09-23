@@ -114,7 +114,7 @@ int count(char* str, char delim){
  
      wordCount = count(str, delim);
    
-    // allocate memory for 2D vector
+     // allocate memory for 2D vector
   
      char**  tokenVec =(char**) calloc(wordCount + 1, sizeof(char*));
 
@@ -125,20 +125,30 @@ int count(char* str, char delim){
 	  word[i] = letterCount(str, delim) +1;
 	  tokenVec[i] = (char*) malloc(sizeof(word[i]));
 	  }
-	else{
+        else{
 	 tokenVec[i] = (char *)0;
-       }
+       } 
      }
-  
+     // first print ok
      for(int i = 0; i < wordCount + 1; i++){
        if(i != wordCount){
-	 tokenVec[i] = stringcpy(tokenVec[i], str, delim);
-	 write(1, tokenVec[i], word[i]);
-	 write(1, "\n", 1);
+	tokenVec[i] = stringcpy(tokenVec[i], str, delim);
+	//starts here
+	    write(1, tokenVec[i], word[i] - 1);
+	    write(1, "\n", 1);
+	
        }
-       else{
-	 tokenVec[i] = (char*)0;
-       }
+        else{
+	 tokenVec[i] = '\0';
+	 } 
      }
+     // next one prints wrongx
+      for(int i = 0; i < wordCount + 1; i++){
+       if(i != wordCount){
+           write(1, tokenVec[i], word[i] - 1);
+	    write(1, "\n", 1);
+	
+       }
+      }
      return tokenVec;
 }
