@@ -60,23 +60,26 @@ int main(int argc, char** argv, char**envp){
     int size = read(0, string, sizeof string);
     string[size - 1] = '\0';
     printf("Current String: %s \n", string);
-    // check if exit entered
+
+   // check if exit entered
      if(checkExit(string, exit)){
       break;
     }   
      // build tokenizer
  
-      // char ** token = mytoc(string , ' ');
-      // tokenVecSize = getVectorSize();
-      // printf("token size: %d \n", tokenVecSize);
-      // setTrackers(0);
-       char* getpath = getenv("PATH");
-      char ** token = mytoc(getpath, ':');
-       pathTokenSize= getVectorSize();   
+         char ** token = mytoc(string , ' ');
+         tokenVecSize = getVectorSize();
+        
+         setTrackers(0);
+
+         char* getpath = getenv("PATH");
+         char ** path = mytoc(getpath, ':');
+         pathTokenSize= getVectorSize();   
       
       
-// startFork(token, path);
-    // free up the space
+     // startFork(token, path);
+
+     // free up the space
        for(int i = 0; i < getVectorSize(); i++){
            free(token[i]);
        } 

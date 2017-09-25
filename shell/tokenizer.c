@@ -7,13 +7,13 @@
 #include "tokenizer.h"
 
 int tracker = 0;
-int atracker = 0;
+int strIndex = 0;
 int wordCount = 0;
 
 // set tracker variables
 void setTrackers(int i){
  tracker = i;
- atracker = i;
+ strIndex = i;
 }
 
 // retrieve the number of words in vector
@@ -23,39 +23,31 @@ int getVectorSize(){
 
 // copy string into token vector
 char* stringcpy(char* tokenVec, char* str, char delim){
-  
   int tvIndex = 0;
   int found = 0;
   int previous = 0;
+  
 
-  while(str[atracker] != 0){
-
-    if(str[atracker] == delim && found){
-     
-      tokenVec[tvIndex] = (char*)0;
-      atracker++;
-      
+  while(str[strIndex] != 0){
+  if(str[strIndex] == delim && found){
+      tokenVec[tvIndex] = '\0';
+      strIndex++;
       return tokenVec;
     }
-     
-    if( (str[atracker] == '\0') && found){
-      tokenVec[tvIndex] = (char*)0;
-       atracker ++;
-       
-	return tokenVec;
-    }
-    if(str[tracker] == delim && !found){
+    if(str[strIndex] == delim && !found){
       continue;
     }
-    if(str[atracker] != delim){
-      tokenVec[tvIndex] = str[atracker];
+    if(str[strIndex] != delim){
+      tokenVec[tvIndex] = str[strIndex];
       tvIndex++;
       found = 1;
     }
-    atracker++;
+    strIndex++;
   }
+
+  
   tvIndex++;
-  tokenVec[tvIndex] = (char*)0;
+  tokenVec[tvIndex] = '\0';
   
   return tokenVec;
 }
@@ -126,13 +118,15 @@ int count(char* str, char delim){
 	  tokenVec[i] = (char*) malloc(sizeof(word[i]));
 	  }
         else{
-	 tokenVec[i] = (char *)0;
+	 tokenVec[i] = '\0';
        } 
      }
+     printf("String being tokenized is: %s \n", str);
+     printf("Printing in first loop \n");
      // first print ok
      for(int i = 0; i < wordCount + 1; i++){
        if(i != wordCount){
-	tokenVec[i] = stringcpy(tokenVec[i], str, delim);
+	 tokenVec[i] = stringcpy(tokenVec[i], str, delim);
 	//starts here
 	    write(1, tokenVec[i], word[i] - 1);
 	    write(1, "\n", 1);
@@ -142,13 +136,15 @@ int count(char* str, char delim){
 	 tokenVec[i] = '\0';
 	 } 
      }
-     // next one prints wrongx
+     printf("Outside of first for loop \n");
       for(int i = 0; i < wordCount + 1; i++){
-       if(i != wordCount){
+     
            write(1, tokenVec[i], word[i] - 1);
 	    write(1, "\n", 1);
 	
-       }
+       
       }
+    
      return tokenVec;
 }
+
