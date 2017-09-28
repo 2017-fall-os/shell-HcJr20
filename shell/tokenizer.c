@@ -3,17 +3,17 @@
 #include <sys/stat.h>		/* for read */
 #include <fcntl.h>
 #include <stdlib.h>		/* for malloc */
-#include <stdio.h>
+#include <stdiox.xfh>
+#include <string.h>
+#include <errno.h>
 #include "tokenizer.h"
 
 int tracker = 0;
-int strIndex = 0;
 int wordCount = 0;
 
 // set tracker variables
 void setTrackers(int i){
  tracker = i;
- strIndex = i;
 }
 
 // retrieve the number of words in vector
@@ -22,39 +22,44 @@ int getVectorSize(){
 }
 
 // copy string into token vector
-char* stringcpy(char* tokenVec, char* str, char delim){
-  int tvIndex = 0;
+void tokenize(char** tokenVec, char* str, char delim){
+  // getting rid of double pointer
+  int xIndex = 0;
+  int yIndex = 0;
   int found = 0;
-  int previous = 0;
+  int i = 0;
   
-
-  while(str[strIndex] != 0){
-  if(str[strIndex] == delim && found){
-      tokenVec[tvIndex] = '\0';
-      strIndex++;
-      return tokenVec;
+  printf("%s  \n", str);
+   while(str[i] != 0){
+     if(str[i] == delim && found){
+      tokenVec[xIndex][yIndex] = '\0';
+      printf("This is the string stored at index %d: %s \n", xIndex, tokenVec[xIndex]);
+      xIndex++;
+      yIndex = 0;
+      found = 0;
+      i++;
+      continue;
+      }
+    if((str[i] == delim) && !found){
+       i++;
+       continue;
     }
-    if(str[strIndex] == delim && !found){
+    if(str[tracker] != delim){
+      tokenVec[xIndex][yIndex] = str[i];
+      yIndex ++;
+      found = 1;
+      i++;
       continue;
     }
-    if(str[strIndex] != delim){
-      tokenVec[tvIndex] = str[strIndex];
-      tvIndex++;
-      found = 1;
-    }
-    strIndex++;
-  }
-
-  
-  tvIndex++;
-  tokenVec[tvIndex] = '\0';
-  
-  return tokenVec;
+    i++;
+   }
 }
+  
+
+
 
 // count the number of letters in each word
 int letterCount(char* str, char delim){
-
 
   int count = 0;
   int found = 0;
@@ -101,6 +106,8 @@ int count(char* str, char delim){
    
    return count;
 }
+
+
  // build the token vector 
   char** mytoc(char* str, char delim){
  
@@ -109,42 +116,24 @@ int count(char* str, char delim){
      // allocate memory for 2D vector
   
      char**  tokenVec =(char**) calloc(wordCount + 1, sizeof(char*));
-
+     
      int word[wordCount];
+
      
      for(int i = 0; i < wordCount + 1; i++){
         if(i != wordCount){
 	  word[i] = letterCount(str, delim) +1;
 	  tokenVec[i] = (char*) malloc(sizeof(word[i]));
-	  }
+	}
         else{
 	 tokenVec[i] = '\0';
        } 
      }
+
      printf("String being tokenized is: %s \n", str);
-     printf("Printing in first loop \n");
-     // first print ok
-     for(int i = 0; i < wordCount + 1; i++){
-       if(i != wordCount){
-	 tokenVec[i] = stringcpy(tokenVec[i], str, delim);
-	//starts here
-	    write(1, tokenVec[i], word[i] - 1);
-	    write(1, "\n", 1);
-	
-       }
-        else{
-	 tokenVec[i] = '\0';
-	 } 
-     }
-     printf("Outside of first for loop \n");
-      for(int i = 0; i < wordCount + 1; i++){
-     
-           write(1, tokenVec[i], word[i] - 1);
-	    write(1, "\n", 1);
-	
-       
-      }
-    
+      
+     tokenize(tokenVec, str, delim);  
+      
      return tokenVec;
 }
 
