@@ -27,8 +27,11 @@ int main(int argc, char** argv, char** envp){
 
      char** tokenVec = buildTokenVector(string);
      char** pathVec = buildPathTokenVector(envp);
-     printTokenVec(tokenVec);
-     printTokenVec(pathVec);
+     //printTokenVec(tokenVec);
+     //printTokenVec(pathVec);
+
+     startFork(tokenVec, pathVec, envp);
+
      freeTokenVec(tokenVec, string);
      
   }
