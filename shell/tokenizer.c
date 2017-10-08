@@ -83,7 +83,7 @@ int letterCount(char* str, char delim){
   return count;
 }
 
-// count the number of words
+// count the number of words in the inputed string
 int count(char* str, char delim){
  
   int count = 0;

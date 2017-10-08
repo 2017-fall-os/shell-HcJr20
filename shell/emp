@@ -16,7 +16,7 @@ int main(int argc, char** argv, char** envp){
   int run = 1;
   char* exit = "exit";
   char string[1024];
-  
+ 
   while(run){
      // get user input
      getInput(string);
@@ -25,32 +25,15 @@ int main(int argc, char** argv, char** envp){
       break;
      }
 
-     char** pipe = buildTokenVector(string, '|');
-     char** tokenVec = buildTokenVector(string, ' ');
-     char** pathVec = buildPathTokenVector(envp, ':');
-
-     if( commandHasPipe(string) ){
-       printf(" It has a pipe \n ");
-     }
-     else{
-       if(itsBackgroundProcess(string)){
-	  printf("Hello you found ampersand \n");
-	  removeAmpersand(tokenVec);
-	  printTokenVec(tokenVec);
-	  startBackgroundProcess(tokenVec, pathVec, envp);
-	 }
-       else if(checkItsCD(tokenVec[0])){
-	  
-	   chdir(tokenVec[1]); 
-	 }
-        else{
-	   startFork(tokenVec, pathVec, envp);  
-        } 
-     }
+     char** tokenVec = buildTokenVector(string);
+     char** pathVec = buildPathTokenVector(envp);
      //printTokenVec(tokenVec);
      //printTokenVec(pathVec);
-     //freeTokenVec(tokenVec, string);
+
+     startFork(tokenVec, pathVec, envp);
+
+     freeTokenVec(tokenVec, string);
      
-    }  
+  }
     return 0;
 }
