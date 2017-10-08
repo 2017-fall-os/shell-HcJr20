@@ -197,30 +197,32 @@ void startPipe(char** firstCommand,char** secondCommand, char** path, char** env
     printf("Fork failed \n");
   }
   else if(pid == 0){
-    printf("Child \n");
+  
        close(1);
        int origSysInput = dup(pipeFDS[1]);
-       runExecve(firstCommand, path, envp);
-       printf("Ran command");
        close(pipeFDS[0]);
        close(pipeFDS[1]);
-      
+       runExecve(firstCommand, path, envp);
        exit(2);
     }
   else{
     
     int waitP = wait(NULL);
-    printf("Parent executed \n");
-    close(0);
-    int origSysReader = dup(pipeFDS[0]);
-    runExecve(secondCommand, path, envp);
-    printf("Command executed \n");
-    close(pipeFDS[0]);
-    close(pipeFDS[1]);
-
-   
-    
-  }
+    int pid2 = fork();
+    if(pid2 < 0){
+      printf("Fork Failed \n");
+    }
+    else if(pid2 == 0){
+      close(0);
+      int origSysReader = dup(pipeFDS[0]);
+      close(pipeFDS[0]);
+      close(pipeFDS[1]);
+      runExecve(secondCommand, path, envp);
+    }
+    else{
+      int waitP2 = wait(NULL);
+      }
+   }
 }
 // checks if the input containts a '&' to determine whether or not its a background process
 int itsBackgroundProcess(char* string){

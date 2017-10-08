@@ -30,7 +30,9 @@ int main(int argc, char** argv, char** envp){
      char** pathVec = buildPathTokenVector(envp, ':');
 
      if( commandHasPipe(string) ){
-       printf(" It has a pipe \n ");
+       char** firstCommand = mytoc(pipe[0], ' ');
+       char** secondCommand = mytoc(pipe[1], ' ');
+       startPipe(firstCommand, secondCommand, pathVec, envp);
      }
      else{
        if(itsBackgroundProcess(string)){
